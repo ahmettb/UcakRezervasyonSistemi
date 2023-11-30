@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using RezervasyonUcak.Models.Token;
+using RezervasyonUcak.Models.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,6 +51,8 @@ var connectionString = builder.Configuration.GetConnectionString("WebApiDatabase
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddScoped<ITokenHandler, RezervasyonUcak.Models.Token.TokenHandler>();
+builder.Services.AddScoped<ImusteriRepository,MusteriRepository>();
+
 
 var app = builder.Build();
 

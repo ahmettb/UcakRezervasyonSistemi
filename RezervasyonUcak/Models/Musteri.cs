@@ -1,7 +1,10 @@
-﻿namespace RezervasyonUcak.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace RezervasyonUcak.Models
 {
     public class Musteri
     {
+        [Key]
 
         private int id;
         private string name;
@@ -16,5 +19,6 @@
         public string Mail { get => mail; set => mail = value; }
         public string Password { get => password; set => password = value; }
         public ICollection<Bilet> Biletler { get => biletler; set => biletler = value; }
+        public int Id { get => id; set => id = value; }
     }
 }

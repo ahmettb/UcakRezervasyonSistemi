@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using RezervasyonUcak.Models;
 using RezervasyonUcak.Models.Dto;
+using RezervasyonUcak.Models.Repository;
 using RezervasyonUcak.Models.Token;
 
 namespace RezervasyonUcak.Controllers.AuthController
@@ -11,32 +12,53 @@ namespace RezervasyonUcak.Controllers.AuthController
 
         private readonly  AppDbContext _context;
         private readonly ITokenHandler _tokenHandler;
+        private readonly ImusteriRepository musteriRepository;
 
-        public AuthController (AppDbContext context, ITokenHandler tokenHandler)
+        public AuthController (AppDbContext context, ITokenHandler tokenHandler,ImusteriRepository ımusteriRepository)
         {
             _context = context;
             _tokenHandler = tokenHandler;
+            musteriRepository = ımusteriRepository;
         }
 
         [HttpPost]
         public IActionResult _Register(Register register)
         {
-            if(ModelState.IsValid)
+
+         
+
+            if (ModelState.IsValid)
             {
-               
+                bool mailKontrol = musteriRepository.existByEmail(register.Email);
+                bool usernameControl=musteriRepository.existByUsername(register.Username);
+
+                        if ( mailKontrol)
+                {
+                    ModelState.AddModelError("Email", "Bu mail zaten kayıtlı");
+                }
+                if (usernameControl)
+                {
+                    ModelState.AddModelError("Username", "Bu kullanıcı adı zaten kayıtlı");
+                }
+
+                if(!mailKontrol && !usernameControl)
+                {
+
+                    Musteri musteri=new Musteri();
+                    musteri.Name= register.Name;    
+                    musteri.Surname= register.Surname;
+                    musteri.Mail = register.Email;
+                    musteri.Password = register.Password;
 
 
-                Musteri musteri = new Musteri();
-                musteri.Name = register.Name;
-                musteri.Surname = register.Surname;
-                musteri.Password = register.Password;
-                musteri.Mail = register.Email;
+                    _context.Musteri.Add(musteri);
+                    _context.SaveChanges();
+                    ViewBag.Message = "Kayıt işlemi başarılı.Lütfen giriş yapınız.";
+                    return View("Login");
 
-                _context.Musteri.Add(musteri);
-                _context.SaveChanges(); 
 
-                return RedirectToAction("Login");
-                   
+                }
+
             }
 
             return View("Register");
@@ -54,8 +76,7 @@ namespace RezervasyonUcak.Controllers.AuthController
 
             if(ModelState.IsValid)
             {
-                       if(login.Mail=="sabis@gmail.com")
-                {
+                
 
 
                     var jwt = Request.Headers["Bearer"];
@@ -81,9 +102,19 @@ namespace RezervasyonUcak.Controllers.AuthController
                     _tokenHandler.getUsernameFromToken(token.AccessToken);
 
 
+              
+
+                    
+
+
+
+
+
+
+
                     return Ok(_tokenHandler.getUsernameFromToken(token.AccessToken));
 
-                }
+                
 
 
             }

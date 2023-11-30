@@ -16,8 +16,9 @@ namespace RezervasyonUcak.Models
         [Required(ErrorMessage = "Soyisim Boş Bırakılamaz")]
         public string Surname { get; set; }
 
+
         [Display(Name = "Kullanıcı Adı")]
-        [Required(ErrorMessage = "Kullanıcı adı Boş Bırakılamaz")]
+        [Required(ErrorMessage = "Soyisim Boş Bırakılamaz")]
         public string Username { get; set; }
 
 
