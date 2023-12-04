@@ -1,16 +1,20 @@
 ﻿
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 
 namespace RezervasyonUcak.Models
 
 
-
-
 {
-    public class AppDbContext:DbContext
+    public class AppDbContext :DbContext
     {
 
 
+        public AppDbContext() 
+        {
+
+        }
 
         protected readonly IConfiguration Configuration;
         public AppDbContext(IConfiguration configuration)
@@ -19,7 +23,7 @@ namespace RezervasyonUcak.Models
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql(Configuration.GetConnectionString("WebApiDatabase"));
+          optionsBuilder.UseNpgsql(Configuration.GetConnectionString("WebApiDatabase"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -30,8 +34,30 @@ namespace RezervasyonUcak.Models
                 .HasForeignKey(b => b.UcusSeferId);
         }
 
+        public Task CreateAsync(Musteri user)
+        {
+            throw new NotImplementedException();
+        }
 
+        public Task UpdateAsync(Musteri user)
+        {
+            throw new NotImplementedException();
+        }
 
+        public Task DeleteAsync(Musteri user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Musteri> FindByIdAsync(string userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Musteri> FindByNameAsync(string userName)
+        {
+            throw new NotImplementedException();
+        }
 
         public DbSet<UcakModel> UcakModel { get; set; }
         public DbSet<Ucak> Ucak { get; set; }

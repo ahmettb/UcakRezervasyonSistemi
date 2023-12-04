@@ -12,7 +12,7 @@ using RezervasyonUcak.Models;
 namespace RezervasyonUcak.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231129160754_init")]
+    [Migration("20231204151533_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -109,6 +109,10 @@ namespace RezervasyonUcak.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("text");
 

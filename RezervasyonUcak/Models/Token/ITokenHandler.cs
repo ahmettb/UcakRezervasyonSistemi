@@ -3,7 +3,7 @@
     public interface ITokenHandler
     {
 
-        Dto.Token CreateAccessToken(Login loginRequest);
+        Dto.Token CreateAccessTokenAsync(Login loginRequest);
         string getUsernameFromToken(string token);
 
     }

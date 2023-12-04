@@ -14,5 +14,8 @@ namespace RezervasyonUcak.Models.Repository
         bool existByUsername(string username);
         bool existByEmail(string email);
 
+
+        Musteri getEmployeeByUsernameAndPassword(string mail, string password);
     }
 }
+

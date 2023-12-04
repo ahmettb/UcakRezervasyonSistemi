@@ -5,53 +5,82 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using RezervasyonUcak.Models.Token;
 using RezervasyonUcak.Models.Repository;
+using RezervasyonUcak.Controllers;
+using Microsoft.Extensions.Options;
+using Microsoft.Net.Http.Headers;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
-
+byte[] key = Encoding.UTF8.GetBytes("secret-key32er242rdfecg45t34rfgt4fef34f3f");
 //var jwtOptions= builder.Configuration.GetSection("JwtOptions").Get<JwtOptions>();
-//builder.Services.AddSingleton(jwtOptions);
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
-    opt =>
-    {
 
-        opt.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["JwtOptions:Issuer"],
-            ValidAudience = builder.Configuration["JwtOptions:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtOptions:SigningKey"]))
-
-
-        };
-        opt.SaveToken = true;
-        opt.RequireHttpsMetadata = false;
-        opt.Events = new JwtBearerEvents
-        {
-            OnMessageReceived = context =>
-            {
-                context.Token = context.Request.Cookies["token"];
-                return Task.CompletedTask;
-            }
-
-        };
-
-
-    }
-
-
-    ).AddCookie(x=>x.Cookie.Name="token");
-
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var connectionString = builder.Configuration.GetConnectionString("WebApiDatabase");
 
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
-builder.Services.AddScoped<ITokenHandler, RezervasyonUcak.Models.Token.TokenHandler>();
+builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
+
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
+
+
+    options =>
+    {
+        options.Cookie.Name = "auth";
+        options.LoginPath = "/Auth/Login";
+        options.AccessDeniedPath = "/Auth/Login";
+
+    }
+    );
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = null;
+        options.JsonSerializerOptions.WriteIndented = true;
+    });
+
+
+
+//builder.Services.AddSingleton(jwtOptions);
+/*builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddCookie(options =>
+{
+    options.Cookie.Name = "MyProjectCookie";
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Set your desired expiration time (e.g., 30 minutes)
+    options.SlidingExpiration = true;
+}).AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero,
+    };
+});
+
+// Add services to the container.
+
+*/
+
+
+//builder.Services.AddScoped<ITokenHandler, RezervasyonUcak.Models.Token.TokenHandler>();
 builder.Services.AddScoped<ImusteriRepository,MusteriRepository>();
+//builder.Services.AddScoped<DataController>();
 
 
 var app = builder.Build();
@@ -74,10 +103,11 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();
+
 
 app.UseAuthorization();
 
-app.UseAuthentication();
 
 app.MapControllerRoute(
     name: "default",

@@ -13,6 +13,17 @@ namespace RezervasyonUcak.Controllers
             _logger = logger;
         }
 
+        public IActionResult AnaSayfa()
+        {
+            return View();
+        }
+        public IActionResult AdminPanel()
+        {
+
+            return View();
+        }
+
+
         public IActionResult Index()
         {
             return View();

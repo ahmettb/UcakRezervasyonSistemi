@@ -5,6 +5,7 @@ namespace RezervasyonUcak.Models
     public class Register
     {
 
+        private string role;
 
 
         [Display(Name ="İsim")]
@@ -31,8 +32,6 @@ namespace RezervasyonUcak.Models
         [Display(Name = "Şifre")]
         [Required(ErrorMessage = "Şifre Boş Bırakılamaz")]
         public string Password { get; set; }
-
-        
-
+        public string Role { get => role; set => role = value; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace RezervasyonUcak.Models
 {
@@ -11,6 +12,9 @@ namespace RezervasyonUcak.Models
         private string surname;
         private string mail;
         private string password;
+        private string role;
+
+    
 
         private ICollection<Bilet> biletler;
 
@@ -20,5 +24,6 @@ namespace RezervasyonUcak.Models
         public string Password { get => password; set => password = value; }
         public ICollection<Bilet> Biletler { get => biletler; set => biletler = value; }
         public int Id { get => id; set => id = value; }
+        public string Role { get => role; set => role = value; }
     }
 }

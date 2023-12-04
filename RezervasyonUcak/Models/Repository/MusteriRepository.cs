@@ -47,5 +47,18 @@ namespace RezervasyonUcak.Models.Repository
         {
             throw new NotImplementedException();
         }
+
+        public Musteri getEmployeeByUsernameAndPassword(string mail, string password)
+        {
+
+
+            Musteri _musteri= (from musteri in _context.Musteri
+                 where musteri.Mail == mail &&
+                 musteri.Password == password
+                 select musteri).FirstOrDefault();
+            
+
+            return _musteri;
+        }
     }
 }

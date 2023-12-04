@@ -17,6 +17,10 @@
         <input class="form-control" asp-for="Password">
         <span asp-validation-for="Password"></span>
     </div>
+    <div class="col-md-4 mx-auto">
+       <h5>@ViewBag.LoginErrorMessage</h5>
+
+    </div>
     <div class="col-md-2 mx-auto">
         <input type="submit" value="Giriş Yap" />
     </div>
