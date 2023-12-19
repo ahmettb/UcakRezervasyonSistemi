@@ -6,7 +6,7 @@
 ## Özellikler
 
 - Giriş-Kayıt olma
-- JWT Token kullanarak,rol bazlı yetkilendirmeler yapma
+- Rol bazlı yetkilendirmeler yapma
 - Admin paneli yönetimi
 - Başlangıç-Varış yeri,saat tarih gibi özellikleri seçip bilet alma
 - Türkçe-İngilizce dil seçeneği
