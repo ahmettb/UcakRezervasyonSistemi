@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RezervasyonUcak.Models
+namespace RezervasyonUcak.Areas.Employees.Models.Dto
 {
-    public class Register
+    public class MusteriRequest
     {
-
 
 
         [Display(Name = "İsim")]

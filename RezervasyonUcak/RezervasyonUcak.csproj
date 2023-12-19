@@ -7,13 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Datas\**" />
+    <Content Remove="Views\Datas\**" />
+    <EmbeddedResource Remove="Views\Datas\**" />
+    <None Remove="Views\Datas\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Employees\Data\" />
+    <Folder Include="Controllers\" />
     <Folder Include="Migrations\" />
-    <Folder Include="Models\Dto\DtoResponse\" />
-    <Folder Include="Views\Datas\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.4.4" />
+    <PackageReference Include="jQuery.UI.Combined" Version="1.13.2" />
     <PackageReference Include="Microsoft.AspNet.Identity.EntityFramework" Version="2.2.4" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
@@ -25,6 +33,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.11" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
   </ItemGroup>

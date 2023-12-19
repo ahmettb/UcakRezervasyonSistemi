@@ -1,0 +1,54 @@
+﻿@model ICollection<RezervasyonUcak.Areas.Employees.Models.Musteri>;
+
+
+
+@{
+
+    Layout = "~/Areas/Admin/Views/Shared/LayoutAdmin.cshtml";
+
+}
+
+
+<div class="container"  style="margin:50px">
+
+    <h4>Müşteri Bilgileri</h4>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="table-responsive" data-pattern="priority-columns">
+                <table summary="This table shows how to create responsive tables using RWD-Table-Patterns' functionality" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Müşteri ID</th>
+                            <th data-priority="1">Ad</th>
+                            <th data-priority="2">Soyad</th>
+                            <th data-priority="3">E Mail</th>
+                            <th data-priority="4">Şifre</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var musteri in Model)
+                        {
+                            <tr>
+                                <td>@musteri.User.Id</td>
+                                <td>@musteri.User.Name</td>
+                                <td>@musteri.User.Surname</td>
+                                <td>@musteri.User.Email</td>
+                                <td>@musteri.User.Password</td>
+                                <form asp-action="delete" asp-controller="Data">
+                                    <input type="hidden" name="id" value="@musteri.User.Id" />
+                                <td> <button type="submit" class="btn btn-light">Sil</button></td>
+                                </form>
+                                <td>   <button type="button" class="btn btn-light">Güncelle</button></td>
+
+                            </tr>
+                        }
+
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

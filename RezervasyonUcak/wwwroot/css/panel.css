@@ -259,14 +259,16 @@
 
 .home-section .home-content {
     display: flex;
-    height: 60px;
+    padding-left:30%;
+    padding-top:100px;
     align-items: center;
+    
 }
 
     .home-section .home-content i,
     .home-section .home-content .text {
         color: #11101d;
-        font-size: 35px;
+        font-size: 25px;
     }
 
     .home-section .home-content i {

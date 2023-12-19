@@ -1,10 +1,7 @@
-using RezervasyonUcak.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using RezervasyonUcak.Models.Token;
-using RezervasyonUcak.Models.Repository;
 using RezervasyonUcak.Controllers;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
@@ -14,7 +11,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-
+using RezervasyonUcak.Areas.Employees.Models;
+using RezervasyonUcak.Areas.Employees.Models.Repository;
+using RezervasyonUcak.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 byte[] key = Encoding.UTF8.GetBytes("secret-key32er242rdfecg45t34rfgt4fef34f3f");
@@ -80,13 +79,15 @@ builder.Services.AddControllers()
 
 //builder.Services.AddScoped<ITokenHandler, RezervasyonUcak.Models.Token.TokenHandler>();
 builder.Services.AddScoped<ImusteriRepository,MusteriRepository>();
+builder.Services.AddScoped< UserRepository>();
+builder.Services.AddScoped<IUcusSeferRepository, UcuSeferRepositroy>();
+
 //builder.Services.AddScoped<DataController>();
 
 
 var app = builder.Build();
 
-
-
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 
 
@@ -109,8 +110,27 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Auth}/{action=Login}/{id?}");
+app.UseEndpoints(endpoints =>
 
+{
+    endpoints.MapAreaControllerRoute(
+        name: "Admin",
+       areaName: "Admin",
+        pattern: "Admin/{controller=AdminPanel}/{action=Anasayfa}/{id?}"
+        );
+    endpoints.MapAreaControllerRoute(
+          name: "Employees",
+          areaName: "Employees",
+          pattern: "Employees/{controller=Musteri}/{action=Anasayfa}/{id?}"
+          ); endpoints.MapDefaultControllerRoute();
+
+}
+);
+
+
+app.MapControllerRoute(
+   name: "default",
+   pattern: "Admin/{controller=AdminPanel}/{action=Anasayfa}/{id?}"
+//  pattern: "{controller=Auth}/{action=Login}/{id?}");
+);
 app.Run();

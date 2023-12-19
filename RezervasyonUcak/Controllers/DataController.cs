@@ -2,13 +2,13 @@
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using RezervasyonUcak.Models;
+using RezervasyonUcak.Areas.Employees.Models;
 using System.Net.Http.Headers;
 
 namespace RezervasyonUcak.Controllers
 
 {
-  [Authorize(Roles ="Admin")]
+    [Authorize(Roles ="Admin")]
     public class DataController:Controller
     {
 

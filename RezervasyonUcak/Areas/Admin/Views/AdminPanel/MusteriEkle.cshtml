@@ -1,0 +1,46 @@
+﻿@model RezervasyonUcak.Areas.Employees.Models.Dto.MusteriRequest;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+
+    Layout = "~/Areas/Admin/Views/Shared/LayoutAdmin.cshtml";
+
+}
+
+<h3>@ViewBag.Message</h3>
+
+<<form asp-action="MusteriEkle" asp-controller="AdminPanel">
+    <div>
+        <label  asp-for="Name"></label>
+        <input class="form-control" asp-for="Name">
+        <span class="validation" asp-validation-for="Name"></span>
+    </div>
+
+    <div>
+        <label asp-for="Surname"></label>
+        <input class="form-control" asp-for="Surname">
+        <span class="validation" asp-validation-for="Surname"></span>
+    </div>
+
+    <div>
+        <label asp-for="Username"></label>
+        <input class="form-control" asp-for="Username">
+        <span class="validation" asp-validation-for="Username"></span>
+    </div>
+
+    <div>
+        <label asp-for="Mail"></label>
+        <input class="form-control" asp-for="Mail">
+        <span class="validation" asp-validation-for="Mail"></span>
+    </div>
+
+    <div>
+        <label asp-for="Password"></label>
+        <input class="form-control" asp-for="Password">
+        <span asp-validation-for="Password" class="validation"></span>
+    </div>
+
+    <input type="submit" value="Giriş Yap" />
+</form>
+
+        
