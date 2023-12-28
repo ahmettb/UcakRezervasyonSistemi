@@ -9,9 +9,9 @@
 }
 
 
-<div class="container"  style="margin:50px">
+<div class="container" style="margin:50px">
 
-    <h2>Müşteri Bilgileri</h2>
+    <h2>Yetkili Bilgileri</h2>
     <div class="row">
         <div class="col-xs-12">
             <div class="table-responsive" data-pattern="priority-columns">
@@ -20,12 +20,12 @@
                         <tr>
                             <th data-priority="1">Düzenle</th>
 
-                            <th>Müşteri ID</th>
-                            <th data-priority="1">Ad</th>
-                            <th data-priority="2">Soyad</th>
-                            <th data-priority="3">E Mail</th>
-                            <th data-priority="4">Şifre</th>
-                            <th data-priority="4">Rol</th>
+                            <th data-priority="1">Yetkili ID</th>
+                            <th data-priority="2">Ad</th>
+                            <th data-priority="3">Soyad</th>
+                            <th data-priority="4">E Mail</th>
+                            <th data-priority="5">Şifre</th>
+                            <th data-priority="6">Rol</th>
 
                         </tr>
                     </thead>
@@ -39,12 +39,12 @@
                                     </button>
                                 </th>
                                 <td> <input size="5" value="@musteri.Id"> </td>
+                                <td><input size="5" value="@musteri.Name"></td>
+                                <td><input size="5" value="@musteri.Surname"></td>
+                                <td><input size="5" value="@musteri.Email"></td>
+                                <td><input size="5" value="@musteri.Password"></td>
+                                <td><input size="5" value="@musteri.Role"></td>
 
-                                <td> <input size="5" value="@musteri.Name"> </td>
-                                <td> <input size="5" value="@musteri.Surname"> </td>
-                                <td> <input size="5" value="@musteri.Email"> </td>
-                                <td> <input size="5" value="@musteri.Password"> </td>
-                                <td> <input size="5" value="@musteri.Role.ToString()"> </td>
                                 <td> <button onclick="kullaniciSil('@musteri.Id')" class="btn btn-light">Sil</button></td>
                                 <td>   <button id="updateButton" type="button" class="btn btn-light">Güncelle</button></td>
 
@@ -59,6 +59,7 @@
         </div>
     </div>
 </div>
+
 
 
 <script type="text/javascript">

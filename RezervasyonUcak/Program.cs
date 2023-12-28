@@ -14,16 +14,19 @@ using Microsoft.EntityFrameworkCore;
 using RezervasyonUcak.Areas.Employees.Models;
 using RezervasyonUcak.Areas.Employees.Models.Repository;
 using RezervasyonUcak.Models;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 byte[] key = Encoding.UTF8.GetBytes("secret-key32er242rdfecg45t34rfgt4fef34f3f");
 //var jwtOptions= builder.Configuration.GetSection("JwtOptions").Get<JwtOptions>();
 
-builder.Services.AddControllersWithViews();
 
+builder.Services.AddControllersWithViews().AddJsonOptions(x =>
+				x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 var connectionString = builder.Configuration.GetConnectionString("WebApiDatabase");
 
-builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseLazyLoadingProxies()
+.UseNpgsql(connectionString));
 
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
@@ -86,6 +89,7 @@ builder.Services.AddScoped<IUcusSeferRepository, UcuSeferRepositroy>();
 
 
 var app = builder.Build();
+
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 

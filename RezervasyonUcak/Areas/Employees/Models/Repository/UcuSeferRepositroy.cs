@@ -1,4 +1,9 @@
-﻿namespace RezervasyonUcak.Areas.Employees.Models.Repository
+﻿using Microsoft.AspNetCore.Mvc;
+using RezervasyonUcak.Areas.Employees.Models.Dto;
+using System;
+using System.Data.Entity;
+
+namespace RezervasyonUcak.Areas.Employees.Models.Repository
 {
 	public class UcuSeferRepositroy : IUcusSeferRepository
 	{
@@ -8,43 +13,118 @@
 			this.dbContext = dbContext;
 		}
 
-		public void addUcusSefer(UcusSefer sefer)
+	
+		public List<UcusSefer> ucusSeferleri()
 		{
-			throw new NotImplementedException();
+			List<UcusSefer> sefer = dbContext.UcusSefers.ToList();
+
+			return dbContext.UcusSefers.ToList();
 		}
 
-		public void deleteUcusSefer(UcusSefer sefer)
-		{
-			throw new NotImplementedException();
-		}
 
-        public List<UcusSefer> getAllUcusSefer()
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<UcusKonum> getAllUcusSeferKonum()
+        public List<UcusKonum> UcusSeferKonumGetir()
 		{
 
 
-List<UcusKonum> query=	dbContext.UcusKonum.ToList();
+				List<UcusKonum> query=	dbContext.UcusKonum.ToList();
 
 	
 			return query;
 		}
-
-		public void getUcusSefer(UcusSefer sefer)
+		public Ucak ucakGetir(int ucakId)
 		{
+		Ucak ucak=	dbContext.Ucak.Include(a=>a.Firma).Where(ucak=>ucak.UcakId==ucakId).Select(ucak=>new Ucak
+				{
+					Firma=ucak.Firma,
+					KoltukSayisi=ucak.KoltukSayisi,	
+					ModelNo=ucak.ModelNo,	
+					UcakId=ucak.UcakId,
+
+			}).FirstOrDefault();
+			return ucak;
+		}
+
+		
+
+
+		public List<UcusSefer> UcusSeferiGetir(int konumId ,DateTime ucusTarih)
+
+		{
+            UcusTarih tarih = dbContext.Tarih.Where(tarih => tarih.UcusTarihi == ucusTarih).
+				
+				Select(t=>new UcusTarih { 
+				
+					Id=t.Id,
+					UcusTarihi=t.UcusTarihi,
+					Konumlar=dbContext.UcusKonum.Where(tarih=>tarih.Id==t.Id).ToList(),
+				}).
+				
+				FirstOrDefault();
+
+            if (tarih == null)
+            {
+                return null;//böyle tarihte bir uçuş yok
+
+            }
+            UcusKonum konum = dbContext.UcusKonum.Include(a=>a.Seferler).Where(konum => konum.Id == konumId && konum.Tarih == tarih).FirstOrDefault();
 			
-			List<UcusSefer>seferListele=new List<UcusSefer>();
-			//seferListele = dbContext.UcusSefers.Where(ucus => ucus.BaslangicKonum == sefer.BaslangicKonum && ucus.VarisKonum == sefer.VarisKonum);
+
+            List<UcusSefer> seferler = dbContext.UcusSefers.
+				Include(ucak=>ucak.Ucak.Firma).
+				Include(konum=>konum.UcusKonum).
+				Include(firma => firma.Ucak.Firma).Where(s => s.UcusKonum == konum).
+			Select(sefer=>new UcusSefer
+			{
+				UcusId=sefer.UcusId,
+				Ucak=dbContext.Ucak.Where(ucak=>ucak.UcakId==sefer.Ucak.UcakId).Select(u=>new Ucak
+				{
+					Firma=u.Firma,
+					KoltukSayisi=u.KoltukSayisi,
+					ModelNo=u.ModelNo,
+                    UcakId = u.UcakId,
+					
+
+				}).FirstOrDefault(),
+				
+				BaslangicSaat=sefer.BaslangicSaat,
+				VarisSaati=sefer.VarisSaati,
+				UcusKonum=sefer.UcusKonum,
+				UcusFiyat=sefer.UcusFiyat,
 
 
-		}
+			}).				
+				ToList();
 
-		public void updateUcusSefer(UcusSefer sefer)
+			return seferler;
+
+        }
+
+		public	UcusSeferResponse ucusSefer(int id)
 		{
-			throw new NotImplementedException();
-		}
-	}
+            UcusSeferResponse model = (from ucus in dbContext.UcusSefers
+                                       where ucus.UcusId == id
+                                       select new UcusSeferResponse
+                                       {
+                                           UcusId = ucus.UcusId,
+                                           UcakId = ucus.Ucak.UcakId,
+                                           BaslangicKonum = ucus.UcusKonum.BaslangicKonum,
+                                           VarisKonum = ucus.UcusKonum.VarisKonum,
+                                           BaslangicSaat = ucus.BaslangicSaat,
+                                           VarisSaati = ucus.VarisSaati,
+                                           UcakModelNo = ucus.Ucak.ModelNo,
+                                           FirmaAdi = ucus.Ucak.Firma.FirmaAdi,
+                                           UcusFiyat = ucus.UcusFiyat,
+                                           koltuklar = ucus.Ucak.Koltuklar
+
+                                       }).FirstOrDefault();
+
+            return model;
+        }
+
+
+		
+
+
+
+    }
 }

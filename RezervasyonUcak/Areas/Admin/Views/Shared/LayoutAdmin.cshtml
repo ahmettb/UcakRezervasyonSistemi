@@ -1,5 +1,11 @@
-﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using RezervasyonUcak.Models;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
 
+    var currentUser = ViewBag.CurrentUser as User;
+
+
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -25,10 +31,12 @@
 </head>
 <body>
     <div class="sidebar close">
-        <div class="logo">
-            <i class="fab fa-trade-federation"></i>
-            <span class="logo-name">Tivotal</span>
-        </div>
+        <li>
+            <span style="color:white;font-size:12px;font-weight:500;padding:10px;">@currentUser.Name @currentUser.Surname</span>
+
+
+        </li>
+
 
         <ul class="nav-list">
 
@@ -36,18 +44,20 @@
             <li>
                 <div class="icon-link">
                     <a href="#">
-                        <i class="fab fa-codepen"></i>
+                        <i class="fab fa-blogger"></i>
                         <span class="link-name">Müşteri Verileri</span>
                     </a>
                     <i class="fas fa-caret-down arrow"></i>
                 </div>
-
                 <ul class="sub-menu">
-                    <li><a asp-controller="AdminPanel" asp-action="MusteriGoruntule"> Bilgiler Görüntüle</a></li>
-
-                    <li><a asp-controller="AdminPanel" asp-action="MusteriEkle">Yeni Müşteri Ekle</a></li>
+                    <li>
+                        <a asp-controller="AdminPanel" asp-action="MusteriGoruntule">Müşteri Bilgileri Görüntüle</a>
+                    </li>
+                    <li><a asp-controller="AdminPanel" asp-action="MusteriEkle">Müşteri Ekle</a></li>
                 </ul>
             </li>
+
+
 
             <li>
                 <div class="icon-link">
@@ -57,10 +67,11 @@
                     </a>
                     <i class="fas fa-caret-down arrow"></i>
                 </div>
-
                 <ul class="sub-menu">
-                    <li><a href="#">Uçak Bilgileri Görüntüle</a></li>
-                    <li><a href="#">Uçak Ekle</a></li>
+                    <li>
+                        <a asp-controller="AdminPanel" asp-action="UcakBilgileriGoruntule">Uçak Bilgileri Görüntüle</a>
+                    </li>
+                    <li><a asp-controller="AdminPanel" asp-action="UcakEkleEkrani">Uçak Ekle</a></li>
                 </ul>
             </li>
 
@@ -72,9 +83,8 @@
                     </a>
                     <i class="fas fa-caret-down arrow"></i>
                 </div>
-
                 <ul class="sub-menu">
-                    <li><a href="#">Uçuş Bilgileri Görüntüle</a></li>
+                    <li><a asp-controller="AdminPanel" asp-action="UcusBilgileriGoruntule">Uçuş Bilgileri Görüntüle</a></li>
                     <li><a asp-controller="AdminPanel" asp-action="UcusSeferiEkle">Uçuş Seferi Ekle</a></li>
                 </ul>
             </li>
@@ -89,7 +99,7 @@
                 </div>
 
                 <ul class="sub-menu">
-                    <li><a href="#">Bilet Bilgileri Görüntüle</a></li>
+                    <li><a asp-controller="AdminPanel" asp-action="BiletGoruntule">Bilet Bilgileri Görüntüle</a></li>
                     <li><a href="#">Bilet Ekle</a></li>
                 </ul>
             </li>
@@ -97,24 +107,32 @@
                 <div class="icon-link">
                     <a href="#">
                         <i class="fab fa-blogger"></i>
-                        <span class="link-name">Kullanıcı ve Yetkiler</span>
+                        <span class="link-name">Kullanıcı Yetki Verileri</span>
                     </a>
+                    <i class="fas fa-caret-down arrow"></i>
                 </div>
-
-
+                <ul class="sub-menu">
+                    <li><a asp-controller="AdminPanel" asp-action="YetkiliKullaniciEkrani">Yetkili Kullanıcı Listesi</a></li>
+                    <li><a asp-controller="AdminPanel" asp-action="UcusSeferiEkle">Uçuş Seferi Ekle</a></li>
+                </ul>
             </li>
 
-            @if (Context.Request.Cookies.ContainsKey("auth"))
-            {
 
                 <li>
                         <a asp-action="Logout" asp-controller="Auth">
-                            <span style="color:white" class="link-name">Çıkış Yap</span>
+                            <span style="color:white;font-size:12px;font-weight:500;padding:10px;">Çıkış Yap</span>
                         </a>
 
 
-                </li>
-            }
+                    </li>
+
+            <li>
+                <a asp-action="Logout" asp-controller="Auth">
+                    <span style="color:white;font-size:12px;font-weight:500;padding:10px;">Bilgilerim</span>
+                </a>
+
+
+            </li>
 
 
 

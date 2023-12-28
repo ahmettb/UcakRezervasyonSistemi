@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace RezervasyonUcak.Migrations
 {
     /// <inheritdoc />
-    public partial class deneme9 : Migration
+    public partial class denes : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -39,7 +39,7 @@ namespace RezervasyonUcak.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "User",
+                name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -53,7 +53,7 @@ namespace RezervasyonUcak.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -83,7 +83,6 @@ namespace RezervasyonUcak.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UcusTarihi = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     BaslangicKonum = table.Column<string>(type: "text", nullable: false),
                     VarisKonum = table.Column<string>(type: "text", nullable: false),
                     TarihId = table.Column<int>(type: "integer", nullable: false)
@@ -111,32 +110,31 @@ namespace RezervasyonUcak.Migrations
                 {
                     table.PrimaryKey("PK_Employee", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Employee_User_UserId",
+                        name: "FK_Employee_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "UcakModel",
+                name: "Koltuk",
                 columns: table => new
                 {
-                    UcakModelId = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UcakFK = table.Column<int>(type: "integer", nullable: false),
-                    ModelNumara = table.Column<string>(type: "text", nullable: false),
-                    KoltukSayisi = table.Column<int>(type: "integer", nullable: false)
+                    KoltukNo = table.Column<string>(type: "text", nullable: false),
+                    DoluMu = table.Column<bool>(type: "boolean", nullable: false),
+                    UcakId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UcakModel", x => x.UcakModelId);
+                    table.PrimaryKey("PK_Koltuk", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UcakModel_Ucak_UcakFK",
-                        column: x => x.UcakFK,
+                        name: "FK_Koltuk_Ucak_UcakId",
+                        column: x => x.UcakId,
                         principalTable: "Ucak",
-                        principalColumn: "UcakId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "UcakId");
                 });
 
             migrationBuilder.CreateTable(
@@ -148,7 +146,8 @@ namespace RezervasyonUcak.Migrations
                     UcusKonumId = table.Column<int>(type: "integer", nullable: false),
                     BaslangicSaat = table.Column<string>(type: "text", nullable: false),
                     VarisSaati = table.Column<string>(type: "text", nullable: false),
-                    UcakId = table.Column<int>(type: "integer", nullable: false)
+                    UcakId = table.Column<int>(type: "integer", nullable: false),
+                    UcusFiyat = table.Column<double>(type: "double precision", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -168,35 +167,18 @@ namespace RezervasyonUcak.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Koltuk",
-                columns: table => new
-                {
-                    KoltukId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UcakModelId = table.Column<int>(type: "integer", nullable: false),
-                    DoluMu = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Koltuk", x => x.KoltukId);
-                    table.ForeignKey(
-                        name: "FK_Koltuk_UcakModel_UcakModelId",
-                        column: x => x.UcakModelId,
-                        principalTable: "UcakModel",
-                        principalColumn: "UcakModelId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Bilets",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UcusSeferId = table.Column<int>(type: "integer", nullable: false),
-                    MusteriId = table.Column<int>(type: "integer", nullable: false),
+                    UcusSeferUcusId = table.Column<int>(type: "integer", nullable: false),
+                    MusteriId1 = table.Column<int>(type: "integer", nullable: false),
                     KesimTarihi = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    BiletFiyat = table.Column<double>(type: "double precision", nullable: false)
+                    BiletFiyat = table.Column<double>(type: "double precision", nullable: false),
+                    IptalMi = table.Column<bool>(type: "boolean", nullable: false),
+                    KoltukId = table.Column<int>(type: "integer", nullable: false),
+                    MusteriId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -205,15 +187,31 @@ namespace RezervasyonUcak.Migrations
                         name: "FK_Bilets_Employee_MusteriId",
                         column: x => x.MusteriId,
                         principalTable: "Employee",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Bilets_Koltuk_KoltukId",
+                        column: x => x.KoltukId,
+                        principalTable: "Koltuk",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Bilets_UcusSefers_UcusSeferId",
-                        column: x => x.UcusSeferId,
+                        name: "FK_Bilets_UcusSefers_UcusSeferUcusId",
+                        column: x => x.UcusSeferUcusId,
                         principalTable: "UcusSefers",
                         principalColumn: "UcusId",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Bilets_Users_MusteriId1",
+                        column: x => x.MusteriId1,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bilets_KoltukId",
+                table: "Bilets",
+                column: "KoltukId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bilets_MusteriId",
@@ -221,9 +219,14 @@ namespace RezervasyonUcak.Migrations
                 column: "MusteriId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Bilets_UcusSeferId",
+                name: "IX_Bilets_MusteriId1",
                 table: "Bilets",
-                column: "UcusSeferId");
+                column: "MusteriId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bilets_UcusSeferUcusId",
+                table: "Bilets",
+                column: "UcusSeferUcusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employee_UserId",
@@ -231,19 +234,14 @@ namespace RezervasyonUcak.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Koltuk_UcakModelId",
+                name: "IX_Koltuk_UcakId",
                 table: "Koltuk",
-                column: "UcakModelId");
+                column: "UcakId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ucak_FirmaId",
                 table: "Ucak",
                 column: "FirmaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UcakModel_UcakFK",
-                table: "UcakModel",
-                column: "UcakFK");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UcusKonum_TarihId",
@@ -268,31 +266,28 @@ namespace RezervasyonUcak.Migrations
                 name: "Bilets");
 
             migrationBuilder.DropTable(
-                name: "Koltuk");
+                name: "Employee");
 
             migrationBuilder.DropTable(
-                name: "Employee");
+                name: "Koltuk");
 
             migrationBuilder.DropTable(
                 name: "UcusSefers");
 
             migrationBuilder.DropTable(
-                name: "UcakModel");
-
-            migrationBuilder.DropTable(
-                name: "User");
-
-            migrationBuilder.DropTable(
-                name: "UcusKonum");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Ucak");
 
             migrationBuilder.DropTable(
-                name: "Tarih");
+                name: "UcusKonum");
 
             migrationBuilder.DropTable(
                 name: "Firma");
+
+            migrationBuilder.DropTable(
+                name: "Tarih");
         }
     }
 }

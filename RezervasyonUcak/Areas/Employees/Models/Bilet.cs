@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using RezervasyonUcak.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace RezervasyonUcak.Areas.Employees.Models
 {
@@ -7,19 +8,19 @@ namespace RezervasyonUcak.Areas.Employees.Models
         [Key]
 
         private int id;
-        private Musteri musteri;
+        private  User musteri;
         private DateTime kesimTarihi;
         private bool iptalMi;
-
-        private int ucusSeferId;
-        private UcusSefer ucusSefer;
+        private  Koltuk koltuk;
+        private  UcusSefer ucusSefer;
         private double biletFiyat;
 
-        public UcusSefer UcusSefer { get => ucusSefer; set => ucusSefer = value; }
-        public int UcusSeferId { get => ucusSeferId; set => ucusSeferId = value; }
+        public virtual UcusSefer UcusSefer { get => ucusSefer; set => ucusSefer = value; }
         public int Id { get => id; set => id = value; }
-        public Musteri Musteri { get => musteri; set => musteri = value; }
+        public virtual User Musteri { get => musteri; set => musteri = value; }
         public DateTime KesimTarihi { get => kesimTarihi; set => kesimTarihi = value; }
         public double BiletFiyat { get => biletFiyat; set => biletFiyat = value; }
+        public bool IptalMi { get => iptalMi; set => iptalMi = value; }
+        public virtual Koltuk Koltuk { get => koltuk; set => koltuk = value; }
     }
 }

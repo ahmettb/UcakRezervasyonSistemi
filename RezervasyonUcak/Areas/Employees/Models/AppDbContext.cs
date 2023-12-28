@@ -15,7 +15,6 @@ namespace RezervasyonUcak.Areas.Employees.Models
 
         public AppDbContext()
         {
-
         }
 
         protected readonly IConfiguration Configuration;
@@ -55,14 +54,13 @@ namespace RezervasyonUcak.Areas.Employees.Models
             throw new NotImplementedException();
         }
 
-        public DbSet<UcakModel> UcakModel { get; set; }
         public DbSet<Ucak> Ucak { get; set; }
         public DbSet<Bilet> Bilets { get; set; }
 		public DbSet<UcusTarih> Tarih { get; set; }
 
-
-		public DbSet<Firma> Firma { get; set; }
         public DbSet<Koltuk> Koltuk { get; set; }
+
+        public DbSet<Firma> Firma { get; set; }
         public DbSet<Musteri> Musteri { get; set; }
         public DbSet<UcusSefer> UcusSefers { get; set; }
         public DbSet<User> Users { get; set; }

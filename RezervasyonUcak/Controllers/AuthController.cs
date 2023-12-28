@@ -77,16 +77,15 @@ namespace RezervasyonUcak.Controllers.AuthController
 
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
-                    if (user.Email == "a@gmail.com")
+                    if (user.Email == "furkan@gmail.com" &&user.Role==Role.Admin)
                     {
-                        return View("UcusSeferiEkle");
 
                         return RedirectToAction("Anasayfa", "AdminPanel", new { area = "Admin", });
                     }
                     else
                     {
 
-                        return RedirectToAction("Anasayfa", "Musteri", new { area = "Employees", UcusSefers = ucusSeferRepository.getAllUcusSefer() });
+                        return RedirectToAction("Anasayfa", "Musteri", new { area = "Employees", });
 
 
                     }

@@ -5,14 +5,14 @@ namespace RezervasyonUcak.Areas.Employees.Models.Repository
     public interface IUcusSeferRepository
     {
 
-        void addUcusSefer(UcusSefer sefer);
-        void updateUcusSefer(UcusSefer sefer);
-        void deleteUcusSefer(UcusSefer sefer);
+        List<UcusKonum> UcusSeferKonumGetir();
 
-        void getUcusSefer(UcusSefer sefer);
-        List<UcusSefer> getAllUcusSefer();
+         Ucak ucakGetir(int ucakId);
+         List<UcusSefer> UcusSeferiGetir(int konumId, DateTime ucusTarih);
 
-        List<UcusKonum> getAllUcusSeferKonum();
+        List<UcusSefer> ucusSeferleri();
+
+
 
 
     }

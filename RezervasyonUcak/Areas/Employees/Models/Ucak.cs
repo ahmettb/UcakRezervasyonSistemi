@@ -8,6 +8,9 @@ namespace RezervasyonUcak.Areas.Employees.Models
 {
     public class Ucak
     {
+
+
+
         [Key]
         private int ucakId;
 
@@ -15,7 +18,9 @@ namespace RezervasyonUcak.Areas.Employees.Models
         private  Firma firma;
 
 
-        private  ICollection<UcakModel> ucakModel;
+
+
+        private  List<Koltuk> koltuklar;
 
         private string modelNo;
 
@@ -24,9 +29,9 @@ namespace RezervasyonUcak.Areas.Employees.Models
 
 
         public virtual Firma Firma { get => firma; set => firma = value; }
-        public virtual ICollection<UcakModel> UcakModel { get => ucakModel; set => ucakModel = value; }
         public int UcakId { get => ucakId; set => ucakId = value; }
         public string ModelNo { get => modelNo; set => modelNo = value; }
         public int KoltukSayisi { get => koltukSayisi; set => koltukSayisi = value; }
+        public  List<Koltuk> Koltuklar { get => koltuklar; set => koltuklar = value; }
     }
 }

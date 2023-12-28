@@ -10,7 +10,6 @@ namespace RezervasyonUcak.Models
         Admin
     }
 
-    [Table("User")]
 
     public class User
     {

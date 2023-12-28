@@ -12,8 +12,8 @@ using RezervasyonUcak.Areas.Employees.Models;
 namespace RezervasyonUcak.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231218161654_deneme9")]
-    partial class deneme9
+    [Migration("20231224183552_denes2")]
+    partial class denes2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,20 +36,33 @@ namespace RezervasyonUcak.Migrations
                     b.Property<double>("BiletFiyat")
                         .HasColumnType("double precision");
 
+                    b.Property<bool>("IptalMi")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime>("KesimTarihi")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("MusteriId")
+                    b.Property<int>("KoltukId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("UcusSeferId")
+                    b.Property<int?>("MusteriId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MusteriId1")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UcusSeferUcusId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("KoltukId");
+
                     b.HasIndex("MusteriId");
 
-                    b.HasIndex("UcusSeferId");
+                    b.HasIndex("MusteriId1");
+
+                    b.HasIndex("UcusSeferUcusId");
 
                     b.ToTable("Bilets");
                 });
@@ -73,21 +86,25 @@ namespace RezervasyonUcak.Migrations
 
             modelBuilder.Entity("RezervasyonUcak.Areas.Employees.Models.Koltuk", b =>
                 {
-                    b.Property<int>("KoltukId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("KoltukId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("DoluMu")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("UcakModelId")
+                    b.Property<string>("KoltukNo")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("UcakId")
                         .HasColumnType("integer");
 
-                    b.HasKey("KoltukId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("UcakModelId");
+                    b.HasIndex("UcakId");
 
                     b.ToTable("Koltuk");
                 });
@@ -135,31 +152,6 @@ namespace RezervasyonUcak.Migrations
                     b.ToTable("Ucak");
                 });
 
-            modelBuilder.Entity("RezervasyonUcak.Areas.Employees.Models.UcakModel", b =>
-                {
-                    b.Property<int>("UcakModelId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UcakModelId"));
-
-                    b.Property<int>("KoltukSayisi")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("ModelNumara")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("UcakFK")
-                        .HasColumnType("integer");
-
-                    b.HasKey("UcakModelId");
-
-                    b.HasIndex("UcakFK");
-
-                    b.ToTable("UcakModel");
-                });
-
             modelBuilder.Entity("RezervasyonUcak.Areas.Employees.Models.UcusKonum", b =>
                 {
                     b.Property<int>("Id")
@@ -174,9 +166,6 @@ namespace RezervasyonUcak.Migrations
 
                     b.Property<int>("TarihId")
                         .HasColumnType("integer");
-
-                    b.Property<DateTime>("UcusTarihi")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("VarisKonum")
                         .IsRequired()
@@ -203,6 +192,9 @@ namespace RezervasyonUcak.Migrations
 
                     b.Property<int>("UcakId")
                         .HasColumnType("integer");
+
+                    b.Property<double>("UcusFiyat")
+                        .HasColumnType("double precision");
 
                     b.Property<int>("UcusKonumId")
                         .HasColumnType("integer");
@@ -268,22 +260,34 @@ namespace RezervasyonUcak.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("RezervasyonUcak.Areas.Employees.Models.Bilet", b =>
                 {
-                    b.HasOne("RezervasyonUcak.Areas.Employees.Models.Musteri", "Musteri")
+                    b.HasOne("RezervasyonUcak.Areas.Employees.Models.Koltuk", "Koltuk")
+                        .WithMany()
+                        .HasForeignKey("KoltukId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RezervasyonUcak.Areas.Employees.Models.Musteri", null)
                         .WithMany("Biletler")
-                        .HasForeignKey("MusteriId")
+                        .HasForeignKey("MusteriId");
+
+                    b.HasOne("RezervasyonUcak.Models.User", "Musteri")
+                        .WithMany()
+                        .HasForeignKey("MusteriId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("RezervasyonUcak.Areas.Employees.Models.UcusSefer", "UcusSefer")
                         .WithMany()
-                        .HasForeignKey("UcusSeferId")
+                        .HasForeignKey("UcusSeferUcusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Koltuk");
 
                     b.Navigation("Musteri");
 
@@ -292,13 +296,9 @@ namespace RezervasyonUcak.Migrations
 
             modelBuilder.Entity("RezervasyonUcak.Areas.Employees.Models.Koltuk", b =>
                 {
-                    b.HasOne("RezervasyonUcak.Areas.Employees.Models.UcakModel", "UcakModel")
+                    b.HasOne("RezervasyonUcak.Areas.Employees.Models.Ucak", null)
                         .WithMany("Koltuklar")
-                        .HasForeignKey("UcakModelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("UcakModel");
+                        .HasForeignKey("UcakId");
                 });
 
             modelBuilder.Entity("RezervasyonUcak.Areas.Employees.Models.Musteri", b =>
@@ -321,17 +321,6 @@ namespace RezervasyonUcak.Migrations
                         .IsRequired();
 
                     b.Navigation("Firma");
-                });
-
-            modelBuilder.Entity("RezervasyonUcak.Areas.Employees.Models.UcakModel", b =>
-                {
-                    b.HasOne("RezervasyonUcak.Areas.Employees.Models.Ucak", "Ucak")
-                        .WithMany("UcakModel")
-                        .HasForeignKey("UcakFK")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Ucak");
                 });
 
             modelBuilder.Entity("RezervasyonUcak.Areas.Employees.Models.UcusKonum", b =>
@@ -375,11 +364,6 @@ namespace RezervasyonUcak.Migrations
                 });
 
             modelBuilder.Entity("RezervasyonUcak.Areas.Employees.Models.Ucak", b =>
-                {
-                    b.Navigation("UcakModel");
-                });
-
-            modelBuilder.Entity("RezervasyonUcak.Areas.Employees.Models.UcakModel", b =>
                 {
                     b.Navigation("Koltuklar");
                 });

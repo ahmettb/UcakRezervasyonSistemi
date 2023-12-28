@@ -1,19 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RezervasyonUcak.Areas.Employees.Models
 {
+    
     public class Koltuk
     {
         [Key]
-
-        private int koltukId;
-        private UcakModel ucakModel;
+        private int id;
+        
+        private string koltukNo;
         private bool doluMu;
 
-
-
-        public UcakModel UcakModel { get => ucakModel; set => ucakModel = value; }
+        public string KoltukNo { get => koltukNo; set => koltukNo = value; }
         public bool DoluMu { get => doluMu; set => doluMu = value; }
-        public int KoltukId { get => koltukId; set => koltukId = value; }
+        public int Id { get => id; set => id = value; }
     }
 }

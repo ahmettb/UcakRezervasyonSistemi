@@ -6,17 +6,16 @@ namespace RezervasyonUcak.Areas.Employees.Models.Repository
     public interface ImusteriRepository
     {
 
-        void saveEmployee(Musteri musteri);
-        void getEmployeeByUsernameOrMail(string usernameOrMail);
+        void musteriKaydet(Musteri musteri);
+        void musteriGetir(string Mail);
         ICollection<Musteri> getAllEmployee(string usernameOrMail);
 
-        void deleteEmployee(Musteri musteri);
-        void updateEmployee(Musteri musteri);
-        bool existByUsername(string username);
-        bool existByEmail(string email);
+        void musteriSil(Musteri musteri);
+        void musteriGuncelle(Musteri musteri);
+        bool mailKontrol(string email);
 
 
-        User getEmployeeByUsernameAndPassword(string mail, string password);
+        User musteriGetirByMail(string mail, string password);
     }
 }
 

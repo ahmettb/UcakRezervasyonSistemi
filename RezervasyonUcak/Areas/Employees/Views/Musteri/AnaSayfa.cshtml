@@ -1,6 +1,7 @@
 ﻿@{
 	Layout = "~/Areas/Employees/Views/Shared/Layout.cshtml";
 	
+	
 }
 
 @model ICollection<RezervasyonUcak.Areas.Employees.Models.UcusKonum>;
@@ -99,8 +100,7 @@
 		</div>
 
 		<div class="box">
-
-			<button onclick="checkFlight()" class="btn btn-info">Uçuş Ara</button>
+			
 
 		</div>
 
@@ -108,21 +108,53 @@
 
 
 </form>
+<button onclick="sender()" class="btn btn-info">Uçuş Ara</button>
 
-<script type="text/javascript">
-    function checkFlight() {
-        var selectedId = document.getElementById("flightId").value;
-        var selectedDate = document.getElementById("flightDate").value;
+<script  type="text/javascript">
+
+
+	function sender() {
+		var selectedId;
+		var selectedDate;
+		selectedId = document.getElementById("flightId").value;
+		selectedDate = document.getElementById("flightDate").value;
+
+		window.location.href = `https://localhost:7004/Employees/Musteri/UcusBilgileriGoruntule?konumId=${selectedId}&tarih_=${selectedDate}`;
+
+		
+	}
+
 	
+		
+	/*	var selectedId;
+		var selectedDate;
+		var list = [{}];
 
-        fetch('http://localhost/7004/Employees/Musteri/UcusGetir?konumId=' + selectedId + '&tarih_=' + selectedDate,
-		{
-				mode: "no-cors",
-		})
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-               // alert(data.message);
-            });
-    }
+
+			selectedId = document.getElementById("flightId").value;
+			selectedDate = document.getElementById("flightDate").value;
+
+
+		//window.location.href = `https://localhost:7004/Employees/Musteri/UcusBilgileriGoruntule?konumId=${selectedId}&tarih_=${selectedDate}`;
+	}
+	*/
+
+		//fetch(`https://localhost:7004/Employees/Musteri/UcusGetir?konumId=${selectedId}&tarih_=${selectedDate}`, {
+	//		method: "GET",
+
+//		})
+	//		.then(response => response.json())
+		//	.then(data => {
+			//	console.log(data);
+			//	list.push(data);
+		//	});
+
+
+
+//	}
+//
+	//);
+
+		
+	
 </script>
