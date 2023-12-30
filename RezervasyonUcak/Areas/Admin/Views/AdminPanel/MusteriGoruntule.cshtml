@@ -40,13 +40,13 @@
                                 </th>
                                 <td> <input size="5" value="@musteri.Id"> </td>
 
-                                <td> <input size="5" value="@musteri.Name"> </td>
-                                <td> <input size="5" value="@musteri.Surname"> </td>
-                                <td> <input size="5" value="@musteri.Email"> </td>
-                                <td> <input size="5" value="@musteri.Password"> </td>
-                                <td> <input size="5" value="@musteri.Role.ToString()"> </td>
+                                <td> <input name="Name" size="5" value="@musteri.Name"> </td>
+                                <td> <input name="Surname" size="5" value="@musteri.Surname"> </td>
+                                <td> <input name="Email" size="5" value="@musteri.Email"> </td>
+                                <td> <input name="Password" size="5" value="@musteri.Password"> </td>
+                                <td> <input name="Role" size="5" value="@musteri.Role.ToString()"> </td>
                                 <td> <button onclick="kullaniciSil('@musteri.Id')" class="btn btn-light">Sil</button></td>
-                                <td>   <button id="updateButton" type="button" class="btn btn-light">Güncelle</button></td>
+                                <td>   <button onclick="updateUser('@musteri.Id')" id="updateButton" type="button" class="btn btn-light">Güncelle</button></td>
 
                             </tr>
                         }
@@ -63,6 +63,36 @@
 
 <script type="text/javascript">
 
+    var name = document.querySelector('input[name="Name"]').value;
+    var surname = document.querySelector('input[name="Surname"]').value;
+    var email = document.querySelector('input[name="Email"]').value;
+    var password = document.querySelector('input[name="Password"]').value;
+    var role = document.querySelector('input[name="Role"]').value;
+    console.log("geldi");
+    function updateUser(id) {
+        fetch(`https://localhost:7004/Admin/AdminPanel/update?id=${id}`, {
+            method: "POST"
+                body: JSON.stringify({
+                Name: name,
+                Surname: surname,
+                Email: email,
+                Password: password,
+                Role: role,
+                Deleted: false,
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        }).catch(response => {
+
+            if (response.ok) {
+                window.location.reload();
+
+            }
+        })
+
+    }
+
     function toggleInputs() {
         var inputs = document.querySelectorAll('tr input');
         for (var i = 0; i < inputs.length; i++) {
@@ -75,6 +105,8 @@
     document.querySelector('.fa-edit').addEventListener('click', function () {
         toggleInputs();
     });
+
+   
 
 
     function kullaniciSil(id) {

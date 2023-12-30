@@ -10,7 +10,16 @@
     <link rel="stylesheet" href="~/css/ticket.css" />
 
 <main class="ticket-system">
- 
+
+
+    @if(Model.Count==0)
+    {
+        <h1>Herhangi bir kayıt bulunamadı</h1>
+    }
+    else
+    {
+        
+
     @foreach(var bilet in Model)
     {
         
@@ -87,6 +96,7 @@
        
         </div>
     </div>
+    }
     }
 </main>
 

@@ -1,0 +1,108 @@
+﻿@{
+
+    Layout = "~/Areas/Admin/Views/Shared/LayoutAdmin.cshtml";
+
+}
+@model List<RezervasyonUcak.Areas.Employees.Models.Bilet>;
+
+    <h3>Bilet Bilgileri </h3>
+
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th>Bilet ID</th>
+            <th>Müşteri Adı</th>
+            <th>Müşteri Soyadı</th>
+            <th>Müşteri Maili</th>
+            <th>Bilet Kesim Tarihi</th>
+            <th>Uçak Firması</th>
+            <th>Uçak Modeli</th>
+            <th>Başlangıç Saati</th>
+            <th>Varış Saati</th>
+            <th>Nereden</th>
+            <th>Nereye</th>
+            <th>Bilet Fiyatı</th>
+            <th>Uçuş Tarihi</th>
+            <th>Koltuk Numarası</th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach(var bilet in Model)
+        {
+            <tr>
+                <td>@bilet.Id  </td>
+                <td>@bilet.Musteri.Name</td>
+                <td>@bilet.Musteri.Surname</td>
+                <td>@bilet.Musteri.Email</td>
+
+                <td>@bilet.KesimTarihi</td>
+                <td>@bilet.UcusSefer.Ucak.Firma.FirmaAdi </td>
+                <td>@bilet.UcusSefer.Ucak.ModelNo </td>
+                <td>@bilet.UcusSefer.BaslangicSaat</td>
+                <td>@bilet.UcusSefer.VarisSaati </td>
+                       <td>@bilet.UcusSefer.UcusKonum.BaslangicKonum </td>
+                <td>@bilet.UcusSefer.UcusKonum.VarisKonum </td>
+
+                <td>@bilet.BiletFiyat</td>
+                <td>@bilet.UcusSefer.UcusKonum.Tarih.UcusTarihi </td>
+
+                <td>@bilet.Koltuk.KoltukNo</td>
+                <td><button   id="iptalButton" > Bileti İptal Et</button></td>
+
+             
+               
+         
+
+        
+
+
+
+            </tr>
+
+        }
+       
+        <!-- and so on... -->
+    </tbody>
+</table>
+
+
+<script type="text/javascript">
+
+
+
+    $("#iptalButton").click(function () {
+         biletId = $(this).closest("tr").find("td:first").text();
+        console.log(biletId);
+        $.post(`https://localhost:7004/Admin/AdminPanel/BiletIptalEt?id=${biletId}`, function (data, status) {
+            // İsteğin sonucunu burada işleyebilirsiniz
+            if (status === "success") {
+                console.log("başarılır");
+                window.location.reload();
+            }
+            else {
+                console.log("BAŞARISIZ");
+
+            }
+        });
+    });
+
+</script>
+
+
+<style>
+
+
+    .styled-table {
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 0.9em;
+        font-family: sans-serif;
+        min-width: 400px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    }
+
+
+
+</style>

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.EntityFrameworkCore;
+using System.Data.Entity;
 using NuGet.Protocol;
 using RezervasyonUcak.Areas.Admin.Model.Dto;
 using RezervasyonUcak.Areas.Employees.Models;
@@ -9,10 +9,10 @@ using RezervasyonUcak.Areas.Employees.Models.Dto;
 using RezervasyonUcak.Areas.Employees.Models.Repository;
 using RezervasyonUcak.Models;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Reflection.Metadata.Ecma335;
 using System.Security.Claims;
-using System.Data.Entity;
+using Microsoft.AspNet.Identity;
+
 namespace RezervasyonUcak.Areas.Admin.Controllers
 {
    [Authorize(Roles ="Admin")]
@@ -59,11 +59,18 @@ namespace RezervasyonUcak.Areas.Admin.Controllers
             List<User> admins = appContext.Users.Where(user => user.Role == Role.Admin && user.Deleted == false).ToList();
             return View(admins);
         }
- 
 
+        public void update(int id,[FromBody]User user)
+        {
+            User userOld=appContext.Users.Where(user=>user.Id==id) .FirstOrDefault();
+            userOld.Name = user.Name;
+            userOld.Surname= user.Surname;
+            userOld.Email=user.Email;
+            userOld.Password=user.Password;
+            appContext.SaveChanges();
+        }
 
-
-        public void kullaniciEkle(UserRequest userRequest)
+        public IActionResult kullaniciEkle(UserRequest userRequest)
         {
 
             if(ModelState.IsValid)
@@ -87,12 +94,24 @@ namespace RezervasyonUcak.Areas.Admin.Controllers
 
                 appContext.SaveChanges();
             }
+            return View("MusteriEkle");
 
             
 
 
 
 
+        }
+
+        [HttpPost]
+        public void BiletIptalEt(int id)
+        {
+
+            Bilet bilet = appContext.Bilets.Where(bilet => bilet.Id == id&& bilet.IptalMi==false).FirstOrDefault();
+
+            bilet.IptalMi = true;
+            appContext.SaveChanges();
+        
         }
 
         public List<Ucak>ucakBilgileri()
@@ -118,7 +137,19 @@ namespace RezervasyonUcak.Areas.Admin.Controllers
 
         }
 
-        public  List<Bilet> BiletGoruntule()
+        public IActionResult BiletBilgileri()
+
+        {
+            List<Bilet> biletler = BiletGoruntule();
+
+
+
+
+            return View(biletler);
+
+        }
+
+        public   List<Bilet> BiletGoruntule()
         {
             List<Bilet> bilet = (from a in appContext.Bilets
                                  select new Bilet
@@ -129,11 +160,63 @@ namespace RezervasyonUcak.Areas.Admin.Controllers
                                      IptalMi = a.IptalMi,
                                      KesimTarihi = a.KesimTarihi,
                                      Koltuk = a.Koltuk,
-                                     UcusSefer = appContext.UcusSefers.Where(konum=>konum.UcusId==),
+                                     UcusSefer = appContext.UcusSefers.Where(konum=>konum.UcusId==a.UcusSefer.UcusId).FirstOrDefault(),
                                     
                                  }).ToList();
 
-            return bilet;
+
+            List<Bilet> biletler = appContext.Bilets
+                            .Include(b => b.UcusSefer).
+                            Include(b=>b.UcusSefer.Ucak)
+            .Include(b => b.UcusSefer.UcusKonum).
+               Include(b => b.UcusSefer.UcusKonum.Tarih)
+
+
+            .Include(b=>b.Koltuk).Where(bilet=>bilet.IptalMi==false)
+          
+                              .Select(bilet =>
+                       new Bilet
+                       {
+                           Id = bilet.Id,
+                           BiletFiyat = bilet.BiletFiyat,
+                           IptalMi = bilet.IptalMi,
+                           Koltuk = bilet.Koltuk,
+                           Musteri = bilet.Musteri,
+                           KesimTarihi = bilet.KesimTarihi,
+                           UcusSefer = appContext.UcusSefers.Where(sefer => sefer.UcusId == bilet.UcusSefer.UcusId).Select(sefer => new UcusSefer
+                           {
+                               Ucak = appContext.Ucak.Where(ucak => ucak.UcakId == sefer.Ucak.UcakId).Select(ucak => new Ucak
+                               {
+                                   Firma = ucak.Firma,
+                                   UcakId = ucak.UcakId,
+                                   ModelNo = ucak.ModelNo,
+                                   Koltuklar = ucak.Koltuklar,
+                                   KoltukSayisi = ucak.KoltukSayisi
+
+                               }).FirstOrDefault(),
+                               UcusFiyat = sefer.UcusFiyat,
+                               UcusId = sefer.UcusId,
+                               BaslangicSaat = sefer.BaslangicSaat,
+                               VarisSaati = sefer.VarisSaati,
+                               UcusKonum = appContext.UcusKonum.Where(konum => konum.Id == bilet.UcusSefer.UcusKonum.Id).Select(konum =>
+                               new UcusKonum
+                               {
+                                   Id = konum.Id,
+                                   BaslangicKonum = konum.BaslangicKonum,
+                                   VarisKonum = konum.VarisKonum,
+                                   Tarih = konum.Tarih,
+                                   Seferler = konum.Seferler,
+
+                               }
+                               ).FirstOrDefault(),
+
+                           }).FirstOrDefault()
+
+                       }
+
+                       ).ToList();
+
+            return biletler;
 
         }
 

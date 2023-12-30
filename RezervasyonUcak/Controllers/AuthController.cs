@@ -51,7 +51,6 @@ namespace RezervasyonUcak.Controllers.AuthController
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpPost]
         public async Task<IActionResult> _Login(Login login)
         {
 
@@ -103,7 +102,6 @@ namespace RezervasyonUcak.Controllers.AuthController
 
 
 
-        [HttpPost]
         public IActionResult _Register(Register register)
         {
 

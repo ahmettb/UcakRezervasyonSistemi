@@ -1,44 +1,64 @@
 ﻿@model Register
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
-
-
-<form asp-action="_Register" asp-controller="Auth" class="d-flex flex-column justify-content-center">
-
-    <label asp-for="Name"></label>
-
-    <input class="form-control" asp-for="Name">
-    <span class="validation" asp-validation-for="Name"></span>
-
-
-
-    <label asp-for="Surname"></label>
-
-    <input class="form-control" asp-for="Surname">
-    <span class="validation" asp-validation-for="Surname"></span>
-
-
-    <label asp-for="Username"></label>
-
-    <input class="form-control" asp-for="Username">
-    <span class="validation" asp-validation-for="Username"></span>
+<link rel="stylesheet" href="~/css/registerlogin.css" />
 
 
 
 
-    <label asp-for="Mail"></label>
-    <input class="form-control" asp-for="Mail">
-    <span class="validation" asp-validation-for="Mail"></span>
+<div class="screen">
+	<div class="screen__content">
+		<form class="login" asp-action="_Register" asp-controller="Auth">
+			<div class="login__field">
+				<i class="login__icon fas fa-user"></i>
+				<input asp-for="Name" type="text" id="login__input" class="form-control" placeholder="Name">
+				<span style="color:red" asp-validation-for="Name"></span>
+
+			</div>
+			<div class="login__field">
+				<i class="login__icon fas fa-user"></i>
+				<input asp-for="Surname" type="text" id="login__input" class="form-control" placeholder="Surname">
+				<span style="color:red" asp-validation-for="Surname"></span>
+
+			</div>
+			<div class="login__field">
+				<i class="login__icon fas fa-lock"></i>
+				<input asp-for="Username" id="login__input" class="form-control" placeholder="Username">
+				<span style="color:red" asp-validation-for="Username"></span>
+
+			</div>
+			<div class="login__field">
+				<i class="login__icon fas fa-lock"></i>
+				<input asp-for="Password" type="password" id="login__input" class="form-control" placeholder="Password">
+				<span style="color:red" asp-validation-for="Password"></span>
+
+			</div>
+			<div class="login__field">
+				<i class="login__icon fas fa-user"></i>
+				<input asp-for="Mail" type="text" id="login__input" class="form-control" placeholder="Email">
+				<span style="color:red" asp-validation-for="Mail"></span>
+
+			</div>
+		
+			<input type="submit" class="button login__submit" value="Kayıt Ol" >
+				<i class="button__icon fas fa-chevron-right"></i>
+		</form>
+
+	</div>
+	<div class="screen__background">
+		<span class="screen__background__shape screen__background__shape4"></span>
+		<span class="screen__background__shape screen__background__shape3"></span>
+		<span class="screen__background__shape screen__background__shape2"></span>
+		<span class="screen__background__shape screen__background__shape1"></span>
+	</div>
+</div>
 
 
-    <label asp-for="Password"></label>
-    <input class="form-control" asp-for="Password">
-    <span asp-validation-for="Password" class="validation"></span>
-
-   
 
 
-    <input type="submit" value="Giriş Yap" />
+
+
+
 
 
 
@@ -48,10 +68,6 @@
 
     <!-- Button trigger modal -->
    
-
-
-
-</form>
 
 
 

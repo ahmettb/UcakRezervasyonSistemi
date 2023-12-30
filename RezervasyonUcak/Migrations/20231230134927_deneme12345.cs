@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace RezervasyonUcak.Migrations
 {
     /// <inheritdoc />
-    public partial class denes : Migration
+    public partial class deneme12345 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -125,7 +125,7 @@ namespace RezervasyonUcak.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     KoltukNo = table.Column<string>(type: "text", nullable: false),
                     DoluMu = table.Column<bool>(type: "boolean", nullable: false),
-                    UcakId = table.Column<int>(type: "integer", nullable: true)
+                    UcakId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -134,7 +134,8 @@ namespace RezervasyonUcak.Migrations
                         name: "FK_Koltuk_Ucak_UcakId",
                         column: x => x.UcakId,
                         principalTable: "Ucak",
-                        principalColumn: "UcakId");
+                        principalColumn: "UcakId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

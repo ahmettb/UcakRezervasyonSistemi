@@ -134,15 +134,15 @@ namespace RezervasyonUcak.Areas.Employees.Controllers
               }).FirstOrDefault();
             if (ucak2.Koltuklar.Count == 0)
             {
-                ucak2.Koltuklar = new List<Koltuk>();
+             //   ucak2.Koltuklar = new List<Koltuk>();
 
                 for (int i = 0; i < ucak2.KoltukSayisi; i++)
                 {
                     Koltuk koltuk = new Koltuk();
                     koltuk.DoluMu = false;
                     koltuk.KoltukNo = "A" + i;
-                    appContext.Koltuk.Add(koltuk);
 
+                    appContext.Koltuk.Add(koltuk);
                     ucak2.Koltuklar.Add(koltuk);
 
                 }
@@ -244,9 +244,18 @@ namespace RezervasyonUcak.Areas.Employees.Controllers
         public void BiletIptal(int biletId)
         {
 
-            Bilet bilet = appContext.Bilets.Where(bilet => bilet.Id == biletId).FirstOrDefault();
-           // bilet.Koltuk.DoluMu = false;
+            Bilet bilet = appContext.Bilets.Include(bilet=>bilet.Koltuk).Where(bilet => bilet.Id == biletId).FirstOrDefault();
             bilet.IptalMi = true;
+            Bilet bilet2 = appContext.Bilets.Include(bilet => bilet.Koltuk).Where(bilet => bilet.Id == biletId).Select(bilet=>new Bilet
+            {
+                Koltuk=bilet.Koltuk,
+                IptalMi=bilet.IptalMi,
+            }).FirstOrDefault();
+
+            //     bilet.Koltuk.DoluMu = false;
+
+            Koltuk koltuk = appContext.Koltuk.Where(koltuk => koltuk.Id == bilet2.Koltuk.Id).FirstOrDefault();
+            koltuk.DoluMu = false;
             appContext.SaveChanges();
 
         }
@@ -255,7 +264,7 @@ namespace RezervasyonUcak.Areas.Employees.Controllers
         {
            User oldUser= appContext.Users.Where(user_ => user_.Email == user.Email).FirstOrDefault();
             oldUser.Name=user.Name;
-            oldUser.Surname=user.Surname;
+            oldUser.Surname = user.Surname;
             oldUser.Email = user.Email;
             oldUser.Password=user.Password;
             appContext.SaveChanges();

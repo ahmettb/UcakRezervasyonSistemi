@@ -12,8 +12,8 @@ using RezervasyonUcak.Areas.Employees.Models;
 namespace RezervasyonUcak.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231224183123_denes")]
-    partial class denes
+    [Migration("20231230135641_dene123")]
+    partial class dene123
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -11,7 +11,7 @@ namespace RezervasyonUcak.Areas.Employees.Models
         
         private string koltukNo;
         private bool doluMu;
-
+        private Ucak ucak;
         public string KoltukNo { get => koltukNo; set => koltukNo = value; }
         public bool DoluMu { get => doluMu; set => doluMu = value; }
         public int Id { get => id; set => id = value; }

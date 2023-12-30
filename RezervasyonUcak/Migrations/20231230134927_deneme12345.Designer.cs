@@ -12,8 +12,8 @@ using RezervasyonUcak.Areas.Employees.Models;
 namespace RezervasyonUcak.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231224183552_denes2")]
-    partial class denes2
+    [Migration("20231230134927_deneme12345")]
+    partial class deneme12345
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,7 +99,7 @@ namespace RezervasyonUcak.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("UcakId")
+                    b.Property<int>("UcakId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -296,9 +296,13 @@ namespace RezervasyonUcak.Migrations
 
             modelBuilder.Entity("RezervasyonUcak.Areas.Employees.Models.Koltuk", b =>
                 {
-                    b.HasOne("RezervasyonUcak.Areas.Employees.Models.Ucak", null)
+                    b.HasOne("RezervasyonUcak.Areas.Employees.Models.Ucak", "Ucak")
                         .WithMany("Koltuklar")
-                        .HasForeignKey("UcakId");
+                        .HasForeignKey("UcakId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ucak");
                 });
 
             modelBuilder.Entity("RezervasyonUcak.Areas.Employees.Models.Musteri", b =>
