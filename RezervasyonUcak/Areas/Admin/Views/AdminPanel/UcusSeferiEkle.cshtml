@@ -10,7 +10,7 @@
 }
 @model ICollection<RezervasyonUcak.Areas.Employees.Models.Firma>;
 
-
+<form asp-controller="AdminPanel" asp-action="SeferEkle">
 
     <div class="col-md-4">
     <label for="bKonum">Başlangıç Konum</label>
@@ -56,70 +56,23 @@
         <input type="text" id="txtSelectedTime2" name="selectedTime2" class="form-control" />
     </div>
 
-<div class="col-md-4">
-
-    <label for="selectedTime2">Uçuş Fiyatı</label>
-
-    <input type="text" id="fiyat" name="fiyat" class="form-control" />
-</div>
-
-
 
     <div class="col-md-4">
        
-        <button id="ekle" value="Ekle"  />Sefer Ekle</button>
+        <input class="form-control" value="Ekle" type="submit" />
     </div>
 
    
 
-
+   
+</form>
 
 
 <script type="text/javascript">
 
-    $('#ekle').click(function () {
-        var bKonum = document.querySelector('input[name="bKonum"]').value;
-        var vKonum = document.querySelector('input[name="vKonum"]').value;
-        var date = document.querySelector('input[name="date"]').value;
-        var fiyat = document.querySelector('input[name="fiyat"]').value;
-
-        var selectedFirmaId =$("#firmaSelect").val();
-        var selectedUcakId = $("#ucakSelect").val();
-        var selectedTime = document.getElementById('txtSelectedTime').value;
-        var selectedTime2 = document.getElementById('txtSelectedTime2').value;
-        var data = {
-            bKonum: bKonum,
-            vKonum: vKonum,
-            fiyat:fiyat,
-            date: date,
-            selectedFirmaId: selectedFirmaId,
-            selectedUcakId: selectedUcakId,
-            selectedTime: selectedTime,
-            selectedTime2: selectedTime2
-        };
-        console.log(data);
 
 
 
-        fetch('https://localhost:7004/Admin/AdminPanel/SeferEkle', {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Accept': 'application/json',
-                "Content-type": "application/json"
-            },
-        })
-            .then(response => {
-                if (response.ok){
-                    console.log("işlem başarılı");
-
-                }
-            })
-            
-            .catch(error => {
-                console.log(error);
-            });
-    });
 
 
     $('#txtSelectedTime').timepicker({
