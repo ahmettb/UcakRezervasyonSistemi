@@ -149,7 +149,55 @@ namespace RezervasyonUcak.Areas.Admin.Controllers
 
         }
 
-        public   List<Bilet> BiletGoruntule()
+
+        [HttpPost]
+        public void SeferEkle([FromBody] SeferEkleRequest request)
+        {
+            UcusKonum konum = new UcusKonum();
+            konum.BaslangicKonum = request.bKonum;
+            konum.VarisKonum = request.vKonum;
+
+            UcusTarih tarih = appContext.Tarih.Where(tarih => tarih.UcusTarihi == request.date).FirstOrDefault();
+            if (tarih == null)
+            {
+                tarih = new UcusTarih();
+                tarih.UcusTarihi = request.date;
+                appContext.Tarih.Add(tarih);
+
+
+            }
+            konum.Tarih = tarih;
+            tarih.Konumlar = new List<UcusKonum>();
+            tarih.Konumlar.Add(konum);
+
+            Ucak ucak = appContext.Ucak.Where(ucak => ucak.UcakId == request.selectedUcakId).FirstOrDefault();
+            Firma firma = appContext.Firma.Where(firma => firma.FirmaId == request.selectedFirmaId).FirstOrDefault();
+
+            UcusSefer sefer = new UcusSefer();
+            sefer.UcusKonum = konum;
+            sefer.Ucak = ucak;
+            sefer.BaslangicSaat = request.selectedTime;
+            sefer.VarisSaati = request.selectedTime2;
+            sefer.UcusFiyat = sefer.UcusFiyat;
+
+            appContext.UcusSefers.Add(sefer);
+            appContext.UcusKonum.Add(konum);
+
+            appContext.SaveChanges();
+
+
+
+
+
+
+
+
+
+        }
+
+
+
+        public List<Bilet> BiletGoruntule()
         {
             List<Bilet> bilet = (from a in appContext.Bilets
                                  select new Bilet

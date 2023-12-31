@@ -6,73 +6,120 @@
 @{
 
     Layout = "~/Areas/Admin/Views/Shared/LayoutAdmin.cshtml";
-    
+
 }
 @model ICollection<RezervasyonUcak.Areas.Employees.Models.Firma>;
 
-<form asp-controller="AdminPanel" asp-action="SeferEkle">
 
-    <div class="col-md-4">
+
+<div class="col-md-4">
     <label for="bKonum">Başlangıç Konum</label>
     <input class="form-control" name="bKonum" type="text" />
-    </div>
+</div>
 
-    <div class="col-md-4">
+<div class="col-md-4">
     <label for="vKonum">Varış Konum</label>
     <input class="form-control" name="vKonum" type="text" />
-    </div>
+</div>
 
-    <div class="col-md-4">
+<div class="col-md-4">
     <label for="date">Sefer Tarihi</label>
     <input class="form-control" name="date" type="date" />
-    </div>
+</div>
 
-    <div class="col-md-4">
+<div class="col-md-4">
     <select id="firmaSelect">
         @foreach (var item in Model)
         {
             <option value="@item.FirmaId">@item.FirmaAdi</option>
         }
-        </select>
-    </div>
-    <div class="col-md-4">
+    </select>
+</div>
+<div class="col-md-4">
 
     <select id="ucakSelect">
         <!-- Seçilen firmanın uçakları burada listelenecek -->
     </select>
-    </div>
+</div>
 
-    <div class="col-md-4">
+<div class="col-md-4">
 
-        <label for="selectedTime">Kalkış Saati</label>
+    <label for="selectedTime">Kalkış Saati</label>
 
-        <input type="text" id="txtSelectedTime" name="selectedTime" class="form-control" />
-    </div>
+    <input type="text" id="txtSelectedTime" name="selectedTime" class="form-control" />
+</div>
 
-    <div class="col-md-4">
+<div class="col-md-4">
 
-        <label for="selectedTime2">Varış Saati</label>
+    <label for="selectedTime2">Varış Saati</label>
 
-        <input type="text" id="txtSelectedTime2" name="selectedTime2" class="form-control" />
-    </div>
+    <input type="text" id="txtSelectedTime2" name="selectedTime2" class="form-control" />
+</div>
+
+<div class="col-md-4">
+
+    <label for="selectedTime2">Uçuş Fiyatı</label>
+
+    <input type="text" id="fiyat" name="fiyat" class="form-control" />
+</div>
 
 
-    <div class="col-md-4">
-       
-        <input class="form-control" value="Ekle" type="submit" />
-    </div>
 
-   
+<div class="col-md-4">
 
-   
-</form>
+    <button id="ekle" value="Ekle" />Sefer Ekle</button>
+</div>
+
+
+
+
 
 
 <script type="text/javascript">
 
+    $('#ekle').click(function () {
+        var bKonum = document.querySelector('input[name="bKonum"]').value;
+        var vKonum = document.querySelector('input[name="vKonum"]').value;
+        var date = document.querySelector('input[name="date"]').value;
+        var fiyat = document.querySelector('input[name="fiyat"]').value;
+
+        var selectedFirmaId = $("#firmaSelect").val();
+        var selectedUcakId = $("#ucakSelect").val();
+        var selectedTime = document.getElementById('txtSelectedTime').value;
+        var selectedTime2 = document.getElementById('txtSelectedTime2').value;
+        var data = {
+            bKonum: bKonum,
+            vKonum: vKonum,
+            fiyat: fiyat,
+            date: date,
+            selectedFirmaId: selectedFirmaId,
+            selectedUcakId: selectedUcakId,
+            selectedTime: selectedTime,
+            selectedTime2: selectedTime2
+        };
+        console.log(data);
 
 
 
+        fetch('https://localhost:7004/Admin/AdminPanel/SeferEkle', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Accept': 'application/json',
+                "Content-type": "application/json"
+            },
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log("işlem başarılı");
+
+                }
+            })
+
+            .catch(error => {
+                console.log(error);
+            });
+    });
 
 
     $('#txtSelectedTime').timepicker({
@@ -106,7 +153,7 @@
         var firmaSelect = document.getElementById('firmaSelect');
         var ucakSelect = document.getElementById('ucakSelect');
 
-        
+
 
         firmaSelect.addEventListener('change', function () {
             var selectedFirmaId = this.value;
