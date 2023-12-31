@@ -17,6 +17,7 @@
     <Folder Include="Areas\Employees\Data\" />
     <Folder Include="Controllers\" />
     <Folder Include="Migrations\" />
+    <Folder Include="Resources\Languages\" />
   </ItemGroup>
 
   <ItemGroup>

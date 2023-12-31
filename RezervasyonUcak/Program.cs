@@ -15,6 +15,7 @@ using RezervasyonUcak.Areas.Employees.Models;
 using RezervasyonUcak.Areas.Employees.Models.Repository;
 using RezervasyonUcak.Models;
 using System.Text.Json.Serialization;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 byte[] key = Encoding.UTF8.GetBytes("secret-key32er242rdfecg45t34rfgt4fef34f3f");
@@ -22,7 +23,29 @@ byte[] key = Encoding.UTF8.GetBytes("secret-key32er242rdfecg45t34rfgt4fef34f3f")
 
 
 builder.Services.AddControllersWithViews().AddJsonOptions(x =>
-				x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+				x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles).AddViewLocalization();
+
+builder.Services.AddLocalization(options =>
+{
+    options.ResourcesPath = "Resources";
+});
+
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    options.DefaultRequestCulture = new("tr-TR");
+
+    CultureInfo[] cultures = new CultureInfo[]
+    {
+        new("tr-TR"),
+        new("en-US"),
+    };
+
+    options.SupportedCultures = cultures;
+    options.SupportedUICultures = cultures;
+});
+
+
 var connectionString = builder.Configuration.GetConnectionString("WebApiDatabase");
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseLazyLoadingProxies()
@@ -89,7 +112,7 @@ builder.Services.AddScoped<IUcusSeferRepository, UcuSeferRepositroy>();
 
 
 var app = builder.Build();
-
+app.UseRequestLocalization();
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
