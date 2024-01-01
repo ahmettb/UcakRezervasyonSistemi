@@ -30,7 +30,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var musteri in Model)
+                        @foreach (var user in Model)
                         {
                             <tr>
                                 <th data-priority="1">
@@ -38,15 +38,15 @@
                                         <i class="fa fa-edit"></i>
                                     </button>
                                 </th>
-                                <td> <input size="5" value="@musteri.Id"> </td>
-                                <td><input size="5" value="@musteri.Name"></td>
-                                <td><input size="5" value="@musteri.Surname"></td>
-                                <td><input size="5" value="@musteri.Email"></td>
-                                <td><input size="5" value="@musteri.Password"></td>
-                                <td><input size="5" value="@musteri.Role"></td>
+                                <td> <input disabled size="5" value="@user.Id"> </td>
+                                <td><input disabled size="5" value="@user.Name"></td>
+                                <td><input disabled size="5" value="@user.Surname"></td>
+                                <td><input disabled size="5" value="@user.Email"></td>
+                                <td><input disabled size="5" value="@user.Password"></td>
+                                <td><input disabled size="5" value="@user.Role"></td>
 
-                                <td> <button onclick="kullaniciSil('@musteri.Id')" class="btn btn-light">Sil</button></td>
-                                <td>   <button id="updateButton" type="button" class="btn btn-light">Güncelle</button></td>
+                                <td> <button onclick="kullaniciSil('@user.Id')" class="btn btn-light">Sil</button></td>
+                                <td>   <button onclick="updateUser('@user.Id')" type="button" class="btn btn-light">Güncelle</button></td>
 
                             </tr>
                         }
@@ -64,7 +64,38 @@
 
 <script type="text/javascript">
 
-    function toggleInputs() {
+
+
+
+
+
+
+
+
+
+
+
+    var name = document.querySelector('input[name="Name"]').value;
+    var surname = document.querySelector('input[name="Surname"]').value;
+    var email = document.querySelector('input[name="Email"]').value;
+    var password = document.querySelector('input[name="Password"]').value;
+    var role = document.querySelector('input[name="Role"]').value;
+    function updateUser(id) {
+
+        window.location.href = `https://localhost:7004/Admin/AdminPanel/KullaniciGuncelle?id=${id}`;
+
+
+
+
+    }
+
+
+
+
+
+
+
+        function toggleInputs() {
         var inputs = document.querySelectorAll('tr input');
         for (var i = 0; i < inputs.length; i++) {
             inputs[i].disabled = !inputs[i].disabled;

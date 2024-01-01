@@ -77,6 +77,11 @@
 
         var Password = document.querySelector('input[name="Password"]').value;
             var Role = document.getElementById('Role').value;
+        var roleId = 0;
+        if (Role == "Admin") { 
+            roleId = 1;
+        }
+
             console.log(Name);
             console.log(Role);
 
@@ -86,7 +91,7 @@
             Surname: Surname,
             Email: Email,
             Password: Password,
-            Role: 0,
+            Role: roleId,
             Deleted:false
         };
         console.log(data);
