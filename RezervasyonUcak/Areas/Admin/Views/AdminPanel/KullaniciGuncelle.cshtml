@@ -1,0 +1,122 @@
+﻿@{
+
+    Layout = "~/Areas/Admin/Views/Shared/LayoutAdmin.cshtml";
+
+}
+
+@model RezervasyonUcak.Models.User;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+<h1>Kullanıcı Güncelleme Ekranı</h1>
+
+<h4>@ViewBag.Msg</h4>
+
+ 
+    <div>
+        <label for="Id">ID</label>
+        <input class="form-control" name="Id" value="@Model.Id">
+        <span class="validation" asp-validation-for="Id"></span>
+    </div>
+    <div>
+        <label for="Name">İsim</label>
+        <input class="form-control" name="Name" value="@Model.Name">
+        <span class="validation" asp-validation-for="Name"></span>
+    </div>
+
+    <div>
+        <label for="Surname">Soyisim</label>
+        <input class="form-control" name="Surname" value="@Model.Surname">
+        <span class="validation" asp-validation-for="Surname"></span>
+    </div>
+
+
+    <div>
+        <label for="Email">Mail</label>
+        <input class="form-control" name="Email" value="@Model.Email">
+        <span class="validation" asp-validation-for="Email"></span>
+    </div>
+
+    <div>
+        <label for="Password">Şifre</label>
+        <input class="form-control" name="Password" value="@Model.Password">
+    </div>
+
+
+
+
+    <div>
+        <label for="Role"></label>
+        <select class="form-control"  id ="Role" for="Role" value="@Model.Role" >
+            @foreach (var role in Enum.GetValues(typeof(RezervasyonUcak.Models.Role)))
+            {
+                <option value="@role">@role</option>
+            }
+        </select>
+    </div>
+
+
+
+
+<button id="update"  >Guncelle</button>
+
+
+
+
+<script type="text/javascript">
+
+    var modelId = "@Model.Id";
+    console.log(modelId);
+
+    $('#update').click(function () {
+        
+            var Id = document.querySelector('input[name="Id"]').value;
+            var Name = document.querySelector('input[name="Name"]').value;
+            var Surname = document.querySelector('input[name="Surname"]').value;
+            var Email = document.querySelector('input[name="Email"]').value;
+
+        var Password = document.querySelector('input[name="Password"]').value;
+            var Role = document.getElementById('Role').value;
+            console.log(Name);
+            console.log(Role);
+
+        var data = {
+            Id: parseInt(Id),
+            Name: Name,
+            Surname: Surname,
+            Email: Email,
+            Password: Password,
+            Role: 0,
+            Deleted:false
+        };
+        console.log(data);
+
+        fetch(`https://localhost:7004/Admin/AdminPanel/_KullaniciGuncelle?id=${modelId}`, {
+
+
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: {
+                    'Accept': 'application/json',
+                    "Content-type": "application/json"
+                },
+
+            }).then(response => {
+
+                if (response.ok) {
+
+                    window.location.reload();
+                }
+        }).catch(error => {
+            console.log(error);
+        });
+        }
+
+   
+    );
+        
+        
+        
+        
+        
+        </script>

@@ -29,7 +29,7 @@
                                 <td>@ucak.Firma.FirmaAdi</td>
                                 <td>@ucak.ModelNo</td>
                                 <td>@ucak.KoltukSayisi</td>
-
+                                <td>  <button onclick="ucakSil('@ucak.UcakId')" >Sil</button></td>
                             </tr>
                         }
 
@@ -41,3 +41,38 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" >
+    
+
+
+
+
+    function ucakSil(id) {
+        console.log(id);
+
+        fetch(`https://localhost:7004/Admin/AdminPanel/ucakSil?id=${id}`, {
+            method: 'POST',
+        }
+
+        ).then(response => {
+            if (response.ok) {
+                window.location.reload();
+
+            }
+            else {
+
+            }
+
+
+        }).catch(error => {
+
+        });
+
+    }
+
+
+
+
+
+
+</script>

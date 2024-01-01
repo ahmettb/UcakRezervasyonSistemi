@@ -73,19 +73,26 @@
 
 
     $("#iptalButton").click(function () {
-         biletId = $(this).closest("tr").find("td:first").text();
+       var biletId= $(this).closest("tr").find("td:first").text();  
+        
         console.log(biletId);
-        $.post(`https://localhost:7004/Admin/AdminPanel/BiletIptalEt?id=${biletId}`, function (data, status) {
-            // İsteğin sonucunu burada işleyebilirsiniz
-            if (status === "success") {
-                console.log("başarılır");
+
+        fetch(`https://localhost:7004/Admin/AdminPanel/BiletIptalEt?id=${biletId}`,{
+
+        method:"POST"
+
+
+
+        }).then(response => {
+
+
+            if (response.ok) { 
                 window.location.reload();
             }
-            else {
-                console.log("BAŞARISIZ");
 
-            }
-        });
+        })
+
+     
     });
 
 </script>

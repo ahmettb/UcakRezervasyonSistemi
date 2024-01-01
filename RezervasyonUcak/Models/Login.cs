@@ -4,10 +4,8 @@ namespace RezervasyonUcak.Models
 {
     public class Login
     {
-        [Display(Name = "E-Mail")]
-        [EmailAddress(ErrorMessage = "Geçerli bir mail giriniz")]
+        [Display(Name = "E-Mail-Kullanıcı Adı")]
         [Required(ErrorMessage = "E-Mail Boş Bırakılamaz")]
-
         public string Mail { get; set; }
 
         [Required(ErrorMessage = "Şifre Boş Bırakılamaz")]

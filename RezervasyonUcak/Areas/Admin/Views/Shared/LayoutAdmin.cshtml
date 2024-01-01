@@ -32,7 +32,7 @@
 <body>
     <div class="sidebar close">
         <li>
-            <span style="color:white;font-size:12px;font-weight:500;padding:10px;">@currentUser.Name @currentUser.Surname</span>
+            <span style="color:white;font-size:10px;font-weight:500;padding:10px;">@currentUser.Name @currentUser.Surname</span>
 
 
         </li>
@@ -100,7 +100,6 @@
 
                 <ul class="sub-menu">
                     <li><a asp-controller="AdminPanel" asp-action="BiletBilgileri">Bilet Bilgileri Görüntüle</a></li>
-                    <li><a href="#">Bilet Ekle</a></li>
                 </ul>
             </li>
             <li>
@@ -113,7 +112,6 @@
                 </div>
                 <ul class="sub-menu">
                     <li><a asp-controller="AdminPanel" asp-action="YetkiliKullaniciEkrani">Yetkili Kullanıcı Listesi</a></li>
-                    <li><a asp-controller="AdminPanel" asp-action="UcusSeferiEkle">Uçuş Seferi Ekle</a></li>
                 </ul>
             </li>
 
@@ -127,10 +125,7 @@
                     </li>
 
             <li>
-                <a asp-action="Logout" asp-controller="Auth">
-                    <span style="color:white;font-size:12px;font-weight:500;padding:10px;">Bilgilerim</span>
-                </a>
-
+             
 
             </li>
 

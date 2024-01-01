@@ -114,6 +114,18 @@ namespace RezervasyonUcak.Areas.Admin.Controllers
         
         }
 
+        [HttpPost]
+        public void ucakSil(int id)
+        {
+
+            Ucak ucak = appContext.Ucak.Where(ucak=>ucak.UcakId==id).FirstOrDefault();
+            appContext.Ucak.Remove(ucak);
+            appContext.SaveChanges();
+           
+
+
+        }
+
         public List<Ucak>ucakBilgileri()
         {
 
@@ -149,6 +161,41 @@ namespace RezervasyonUcak.Areas.Admin.Controllers
 
         }
 
+        public User getUserById(int id)
+        {
+            User user = appContext.Users.Where(user => user.Id == id).FirstOrDefault();
+            return user;
+        }
+
+        public IActionResult KullaniciGuncelle(int id)
+        {
+
+
+
+            return View(getUserById(id));
+        
+        }
+
+        [HttpPost]
+        public void _KullaniciGuncelle([FromBody] User user,int id)
+        {
+
+
+            User user_ = appContext.Users.Where(user1 => user1.Id == id).FirstOrDefault();
+
+            user_.Id=user.Id;
+            user_.Name=user.Name;
+            user_.Surname=user.Surname;  
+            user_.Password=user.Password;
+            user_.Deleted = false;
+            user_.Role=user.Role;
+
+            appContext.SaveChanges();
+
+            ViewBag.Msg = "Güncelleme işlemi başarılı";
+
+
+        }
 
         [HttpPost]
         public void SeferEkle([FromBody] SeferEkleRequest request)

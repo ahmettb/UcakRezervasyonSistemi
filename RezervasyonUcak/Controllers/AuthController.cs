@@ -76,7 +76,7 @@ namespace RezervasyonUcak.Controllers.AuthController
 
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
-                    if (user.Email == "furkan@gmail.com" &&user.Role==Role.Admin)
+                    if (user.Email == "b211210003@sakarya.edu.tr" &&user.Role==Role.Admin)
                     {
 
                         return RedirectToAction("Anasayfa", "AdminPanel", new { area = "Admin", });
