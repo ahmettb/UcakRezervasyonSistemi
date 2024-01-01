@@ -9,7 +9,6 @@
 - Rol bazlı yetkilendirmeler yapma
 - Admin paneli yönetimi
 - Başlangıç-Varış yeri,saat tarih gibi özellikleri seçip bilet alma
-- Türkçe-İngilizce dil seçeneği
 - Linq temelli api hizmeti (Consume API)
 
 
