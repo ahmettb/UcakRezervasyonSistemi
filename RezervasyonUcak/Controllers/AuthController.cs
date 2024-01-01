@@ -114,7 +114,7 @@ namespace RezervasyonUcak.Controllers.AuthController
 
                 if (mailKontrol)
                 {
-                    ModelState.AddModelError("Email", "Bu mail zaten kayıtlı");
+                    ViewBag.Message = "Bu mail zaten kayıtlı";
                 }
                 if (usernameControl)
                 {

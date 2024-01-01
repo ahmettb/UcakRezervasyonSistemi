@@ -26,7 +26,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var ucus in Model)
+                        @if(Model==null)
+                        {
+                            <h3>Kayıtlı Herhangi Bir Uçuş Seferi Bulunamadı</h3>
+
+                        }
+                        else
+                        {
+                              @foreach (var ucus in Model)
                         {
                             <tr>
                                 <td>@ucus.UcusKonum.BaslangicKonum</td>
@@ -44,6 +51,8 @@
                         
                             </tr>
                         }
+                        }
+                      
 
 
                     </tbody>

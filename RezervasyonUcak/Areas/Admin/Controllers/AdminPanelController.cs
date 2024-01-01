@@ -171,7 +171,6 @@ namespace RezervasyonUcak.Areas.Admin.Controllers
         {
 
 
-
             return View(getUserById(id));
         
         }
@@ -187,6 +186,7 @@ namespace RezervasyonUcak.Areas.Admin.Controllers
             user_.Name=user.Name;
             user_.Surname=user.Surname;  
             user_.Password=user.Password;
+            user_.Email = user.Email;
             user_.Deleted = false;
             user_.Role=user.Role;
 

@@ -8,6 +8,7 @@
 
 <div class="screen">
 	<div class="screen__content">
+		<H1>@ViewBag.Message</H1>
 		<form class="login" asp-action="_Register" asp-controller="Auth">
 			<div class="login__field">
 				<i class="login__icon fas fa-user"></i>
@@ -21,12 +22,7 @@
 				<span style="color:red" asp-validation-for="Surname"></span>
 
 			</div>
-			<div class="login__field">
-				<i class="login__icon fas fa-lock"></i>
-				<input asp-for="Username" id="login__input" class="form-control" placeholder="Username">
-				<span style="color:red" asp-validation-for="Username"></span>
-
-			</div>
+	
 			<div class="login__field">
 				<i class="login__icon fas fa-lock"></i>
 				<input asp-for="Password" type="password" id="login__input" class="form-control" placeholder="Password">
